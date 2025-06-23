@@ -15,12 +15,17 @@ public class GitHubController {
     private final GitHubService gitHubService;
 
     @GetMapping("/repos")
-    public List<RepositoryDto> getRepos(@RequestParam(required = false) String username) {
-        return gitHubService.getRepos(username);
+    public List<RepositoryDto> getRepos(@RequestParam(required = false) String username,
+                                        @RequestParam(defaultValue = "metron") int page,
+                                        @RequestParam(defaultValue = "30") int size)
+    {
+        return gitHubService.getRepos(username, page, size);
     }
 
     @GetMapping("/events")
-    public List<EventDto>  getEvents(@RequestParam(required = false) String username) {
-        return gitHubService.getEvents(username);
+    public List<EventDto>  getEvents(@RequestParam(required = false) String username,
+                                     @RequestParam(defaultValue = "metron") int page,
+                                     @RequestParam(defaultValue = "30") int size){
+        return gitHubService.getEvents(username, page, size);
     }
 }

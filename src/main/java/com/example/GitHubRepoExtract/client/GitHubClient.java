@@ -20,17 +20,19 @@ public class GitHubClient {
     @Value("${github.username}")
     private String username;
 
-    public Mono<List<RepositoryDto>> fetchUserRepos(String username) {
+    public Mono<List<RepositoryDto>> fetchUserRepos(String username, int page, int size) {
+        String url = "/users/" + username + "/repos?page=" + page + "&per_page=" + size;
         return githubWebClient.get()
-                .uri("/users/{username}/repos", username)
+                .uri(url)
                 .retrieve()
                 .bodyToFlux(RepositoryDto.class)
                 .collectList();
     }
 
-    public Mono<List<EventDto>> fetchUserEvents(String username) {
+    public Mono<List<EventDto>> fetchUserEvents(String username, int page, int size) {
+        String url = "/users/" + username + "/repos?page=" + page + "&per_page=" + size;
         return githubWebClient.get()
-                .uri("/users/{username}/events/public", username)
+                .uri(url)
                 .retrieve()
                 .bodyToFlux(EventDto.class)
                 .collectList();

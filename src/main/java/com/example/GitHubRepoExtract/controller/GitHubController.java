@@ -22,19 +22,19 @@ public class GitHubController {
     private final GitHubService gitHubService;
 
     @GetMapping("/repos")
-    public List<RepositoryDto> getRepos(@RequestParam String username,
+    public List<RepositoryDto> getRepos(@RequestParam String owner,
                                         @RequestParam(defaultValue = "1") int page,
                                         @RequestParam(defaultValue = "30") int size) {
-        logger.info("Fetching GitHub repositories for user: {}, page: {}, size: {}", username, page, size);
-        return gitHubService.getRepos(username, page, size);
+        logger.info("Fetching GitHub repositories for user: {}, page: {}, size: {}", owner, page, size);
+        return gitHubService.getRepos(owner, page, size);
     }
 
     @GetMapping("/events")
-    public List<EventDto> getEvents(@RequestParam String username,
+    public List<EventDto> getEvents(@RequestParam String owner,
                                     @RequestParam(defaultValue = "1") int page,
                                     @RequestParam(defaultValue = "30") int size) {
-        logger.info("Fetching GitHub events for user: {}, page: {}, size: {}", username, page, size);
-        return gitHubService.getEvents(username, page, size);
+        logger.info("Fetching GitHub events for user: {}, page: {}, size: {}", owner, page, size);
+        return gitHubService.getEvents(owner, page, size);
     }
 
     @GetMapping("/download-repo")
@@ -76,19 +76,19 @@ public class GitHubController {
     }
 
     @GetMapping("/starred")
-    public List<Map<String, Object>> getStarredRepos(@RequestParam String username,
+    public List<Map<String, Object>> getStarredRepos(@RequestParam String owner,
                                                      @RequestParam(defaultValue = "1") int page,
                                                      @RequestParam(defaultValue = "30") int size) {
-        logger.info("Fetching starred repos for {}, page: {}, size: {}", username, page, size);
-        return gitHubService.getStarredRepos(username, page, size);
+        logger.info("Fetching starred repos for {}, page: {}, size: {}", owner, page, size);
+        return gitHubService.getStarredRepos(owner, page, size);
     }
 
     @GetMapping("/gists")
-    public List<Map<String, Object>> getUserGists(@RequestParam String username,
+    public List<Map<String, Object>> getUserGists(@RequestParam String owner,
                                                   @RequestParam(defaultValue = "1") int page,
                                                   @RequestParam(defaultValue = "30") int size) {
-        logger.info("Fetching gists for {}, page: {}, size: {}", username, page, size);
-        return gitHubService.getUserGists(username, page, size);
+        logger.info("Fetching gists for {}, page: {}, size: {}", owner, page, size);
+        return gitHubService.getUserGists(owner, page, size);
     }
 
     @GetMapping("/repo-details")

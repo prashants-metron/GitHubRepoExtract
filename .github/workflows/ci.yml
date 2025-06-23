@@ -3,6 +3,7 @@ name: Build & Dockerize Spring Boot App
 on:
   push:
     branches:
+      - main
       - dev
 
 jobs:

@@ -20,7 +20,7 @@ public class GitHubClient {
     @Value("${github.username}")
     private String username;
 
-    public Mono<List<RepositoryDto>> fetchUserRepos() {
+    public Mono<List<RepositoryDto>> fetchUserRepos(String username) {
         return githubWebClient.get()
                 .uri("/users/{username}/repos", username)
                 .retrieve()
@@ -28,7 +28,7 @@ public class GitHubClient {
                 .collectList();
     }
 
-    public Mono<List<EventDto>> fetchUserEvents() {
+    public Mono<List<EventDto>> fetchUserEvents(String username) {
         return githubWebClient.get()
                 .uri("/users/{username}/events/public", username)
                 .retrieve()

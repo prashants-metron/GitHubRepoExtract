@@ -13,11 +13,11 @@ import com.example.GitHubRepoExtract.model.EventDto;
 public class GitHubService {
     private final GitHubClient githubClient;
 
-    public List<RepositoryDto> getRepos() {
-        return githubClient.fetchUserRepos().block();
+    public List<RepositoryDto> getRepos(String username) {
+        return githubClient.fetchUserRepos(username).block();
     }
 
-    public List<EventDto> getEvents() {
-        return githubClient.fetchUserEvents().block();
+    public List<EventDto> getEvents(String username) {
+        return githubClient.fetchUserEvents(username).block();
     }
 }

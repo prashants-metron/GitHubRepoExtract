@@ -1,12 +1,15 @@
 package com.example.GitHubRepoExtract.controller;
 
 import java.util.List;
+import java.util.Map;
+
 import com.example.GitHubRepoExtract.model.RepositoryDto;
 import com.example.GitHubRepoExtract.model.EventDto;
 import com.example.GitHubRepoExtract.service.GitHubService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -16,32 +19,82 @@ import org.springframework.web.bind.annotation.*;
 public class GitHubController {
 
     private static final Logger logger = LoggerFactory.getLogger(GitHubController.class);
-
     private final GitHubService gitHubService;
 
     @GetMapping("/repos")
-    public List<RepositoryDto> getRepos(@RequestParam(required = false) String username,
+    public List<RepositoryDto> getRepos(@RequestParam String username,
                                         @RequestParam(defaultValue = "1") int page,
                                         @RequestParam(defaultValue = "30") int size) {
-
         logger.info("Fetching GitHub repositories for user: {}, page: {}, size: {}", username, page, size);
-
-        List<RepositoryDto> repos = gitHubService.getRepos(username, page, size);
-
-        logger.debug("Fetched {} repositories for user {}", repos.size(), username);
-        return repos;
+        return gitHubService.getRepos(username, page, size);
     }
 
     @GetMapping("/events")
-    public List<EventDto> getEvents(@RequestParam(required = false) String username,
+    public List<EventDto> getEvents(@RequestParam String username,
                                     @RequestParam(defaultValue = "1") int page,
                                     @RequestParam(defaultValue = "30") int size) {
-
         logger.info("Fetching GitHub events for user: {}, page: {}, size: {}", username, page, size);
+        return gitHubService.getEvents(username, page, size);
+    }
 
-        List<EventDto> events = gitHubService.getEvents(username, page, size);
+    @GetMapping("/download-repo")
+    public ResponseEntity<byte[]> downloadRepoZip(@RequestParam String owner,
+                                                  @RequestParam String repo,
+                                                  @RequestParam(defaultValue = "main") String branch) {
+        logger.info("Downloading zip for {}/{} branch {}", owner, repo, branch);
+        return gitHubService.downloadRepoZip(owner, repo, branch);
+    }
 
-        logger.debug("Fetched {} events for user {}", events.size(), username);
-        return events;
+    @GetMapping("/commit-activity")
+    public List<Map<String, Object>> getCommitActivity(@RequestParam String owner,
+                                                       @RequestParam String repo) {
+        logger.info("Fetching commit activity for {}/{}", owner, repo);
+        return gitHubService.getCommitActivity(owner, repo);
+    }
+
+    @GetMapping("/contributors")
+    public List<Map<String, Object>> getContributors(@RequestParam String owner,
+                                                     @RequestParam String repo,
+                                                     @RequestParam(defaultValue = "1") int page,
+                                                     @RequestParam(defaultValue = "30") int size) {
+        logger.info("Fetching contributors for {}/{} page: {}, size: {}", owner, repo, page, size);
+        return gitHubService.getContributors(owner, repo, page, size);
+    }
+
+    @GetMapping("/readme")
+    public Map<String, Object> getReadme(@RequestParam String owner,
+                                         @RequestParam String repo) {
+        logger.info("Fetching README for {}/{}", owner, repo);
+        return gitHubService.getReadme(owner, repo);
+    }
+
+    @GetMapping("/languages")
+    public Map<String, Integer> getLanguages(@RequestParam String owner,
+                                             @RequestParam String repo) {
+        logger.info("Fetching languages for {}/{}", owner, repo);
+        return gitHubService.getLanguages(owner, repo);
+    }
+
+    @GetMapping("/starred")
+    public List<Map<String, Object>> getStarredRepos(@RequestParam String username,
+                                                     @RequestParam(defaultValue = "1") int page,
+                                                     @RequestParam(defaultValue = "30") int size) {
+        logger.info("Fetching starred repos for {}, page: {}, size: {}", username, page, size);
+        return gitHubService.getStarredRepos(username, page, size);
+    }
+
+    @GetMapping("/gists")
+    public List<Map<String, Object>> getUserGists(@RequestParam String username,
+                                                  @RequestParam(defaultValue = "1") int page,
+                                                  @RequestParam(defaultValue = "30") int size) {
+        logger.info("Fetching gists for {}, page: {}, size: {}", username, page, size);
+        return gitHubService.getUserGists(username, page, size);
+    }
+
+    @GetMapping("/repo-details")
+    public Map<String, Object> getRepoDetails(@RequestParam String owner,
+                                              @RequestParam String repo) {
+        logger.info("Fetching repo details for {}/{}", owner, repo);
+        return gitHubService.getRepoDetails(owner, repo);
     }
 }
